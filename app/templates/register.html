@@ -1,0 +1,166 @@
+{% load static %}
+<html>
+<head>
+	<meta charset="UTF-8">
+   
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="http://api.asilu.com/cdn/jquery.js,jquery.backstretch.min.js" type="text/javascript"></script>
+    <style>
+			button:hover{/*鼠标移动时的颜色变化*/
+			background-color: cyan;
+		}
+		</style>
+	<title>用户注册</title>
+    <!-- "../static/css/register.css" -->
+    	<link rel="stylesheet" type="text/css" href="{% static  'css/register.css' %}">
+</head>
+<body >
+
+
+    <script>
+        function upperCase()
+        {
+        var phone = document.getElementById('phoneNumber').value;
+
+        if(!(/^1[34578]\d{9}$/.test(phone))){
+
+            document.getElementById("账号").innerHTML = "账号格式不对";
+
+            return false;
+
+        }
+            else{
+                    document.getElementById("账号").innerHTML ="";
+                    return true;
+                }
+
+        }
+    </script>
+
+    <script>
+        function checkPassword() {
+            var passwordNumber1 = document.getElementById('passwordNumber1').value;
+            var passwordNumber2 = document.getElementById('passwordNumber2').value;
+
+            if (passwordNumber1 != passwordNumber2) {
+                 document.getElementById("确认密码").innerHTML = "两次密码不一致，请重新设置密码";
+                return false;
+            }
+            else{
+                document.getElementById("确认密码").innerHTML ="";
+                return true;
+            }
+
+
+        }
+    </script>
+    <script>
+        function checkPasswordForm() {
+            var passwordNumber1=document.getElementById('passwordNumber1').value;
+            var reg = /^(?=.*[a-zA-Z])(?=.*\d).{8,16}$/;
+            var flag = reg.test(passwordNumber1);
+                if (flag == false) {
+                    document.getElementById("密码").innerHTML = "密码长度为8-16位，必须包含字母、数字";
+
+                    return false;
+                }
+                else{
+                    document.getElementById("密码").innerHTML ="";
+                    return true;
+                }
+        }
+    </script>
+    <script>
+        function success() {
+            var reg = /^(?=.*[a-zA-Z])(?=.*\d).{8,16}$/;
+            var reg1=/^1[34578]\d{9}$/;
+            var ID=document.getElementById('phoneNumber').value;
+            var passwordNumber1=document.getElementById('passwordNumber1').value;
+            var passwordNumber2=document.getElementById('passwordNumber2').value;
+            //(passwordNumber1==passwordNumber2)||reg1.test(ID)==true)
+            if (reg.test(passwordNumber1)==true&&passwordNumber1==passwordNumber2&&reg1.test(ID)==true){
+
+            return true;}
+            else {
+                location.href="";
+                alert("注册失败",location.href);
+                return false;
+            }
+        }
+    </script>
+
+    {% load static %}
+<div id="Layer1" style="position:fixed; left:0%; top:0%; width:100%; height:100%; z-index: -1">
+    <img style="position:fixed;left:0px; top:0px; width:100%; height:100%" src="{% static 'images/intro-bg.jpg' %}" />
+</div>
+	<div class="login-box" style="background-color: rgba(0,0,0,0.3);height: 500px">
+    <div style="background-color: rgba(0,0,0,0.3);padding-left: 92%"  >   <a style="color: white" href="/app/index/"><b>回到首页</b></a></div>
+	<div class="left" style="background-color: rgba(0,0,0,0.3)" >
+		<h1 style="padding-left: 65%;color: white">快速注册</h1>
+
+        <form action="/app/register/" method="post" >
+            {% csrf_token %}
+		<table class="login-table" >
+			<tr>
+				<td style="color: white" ><b style="font-size: 20px">账    号：</b></td>
+                 <!--onblur是指输入框失去焦点，onchange是指输入框的内容改变且失去焦点-->
+				<td><input type="tel" id="phoneNumber" name= "phoneNumber" style="width: 220px;height: 25px" maxlength="11" placeholder="请输入手机号" onchange="upperCase()"></td>
+                <td id="账号" style="color: red ;font-size:10px"></td>
+			</tr>
+            <tr>
+				<td style="color: white"><b style="font-size: 20px">昵    称：</b></td>
+				<td><input type="text" name="nickname" style="width: 220px;height: 25px" placeholder="请输入昵称" ></td>
+			</tr>
+            <tr>
+				<td style="color: white"><b style="font-size: 20px">城    市：</b></td>
+				<td><input type="text" name="city" style="width: 220px;height: 25px" placeholder="请输入所在城市" ></td>
+			</tr>
+            <tr>
+				<td style="color: white"><b style="font-size: 20px">性    别：</b></td>
+					<td style="color: cornflowerblue">
+						<input type="radio" name="gender" value="男"><b style="color: white;font-size: 20px">男</b></label>
+						<input type="radio" name="gender" value="女"><b style="color: white;font-size: 20px">女</b></label>
+					</td>
+			</tr>
+			<tr>
+				<td style="color: white" ><b style="font-size: 20px">密    码：</b></td>
+                <!--onblur是指输入框失去焦点，onchange是指输入框的内容改变且失去焦点-->
+				<td><input type="password" style="width: 220px;height: 25px" name="pwd1" id="passwordNumber1" maxlength="16" placeholder="请输入8到16位包含数字和字母的密码" autocomplete="new-password" onchange="checkPasswordForm()"></td>
+                <td id="密码" style="color: red ;font-size:10px"></td>
+			</tr>
+			<tr>
+				<td style="color: white" ><b style="font-size: 20px">确认密码：</b></td>
+				<td><input type="password" style="width: 220px;height: 25px" name="pwd2" id="passwordNumber2" maxlength="16" placeholder="请确认密码" autocomplete="new-password" onchange="checkPassword()"></td>
+                <td id="确认密码" style="color: red;font-size:10px"></td>
+			</tr>
+
+			<tr>
+				<td></td>
+					<td>
+						<button type="submit" class="submit-create" onclick="success()" >创建账户</button>
+					</td>
+
+				<td>
+					<label style="color: red">{{ msg }}</label>
+				</td>
+			</tr>
+		</table>
+        </form>
+
+	</div>
+	<div class="right" style="background-color: rgba(0,0,0,0.3) " >
+
+		<div style="padding-bottom: 10%">
+		<p class="js" style="color: white" ><b>已有账号？欢迎登录</b></p>
+			<td>
+				<button class="submit-inter" ><a href='/app/login/' style="color: white">登  录</a></button>
+			</td>
+        </div>
+
+    </div>
+
+	</div>
+</body>
+</html>
+

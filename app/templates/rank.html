@@ -1,0 +1,132 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Poker Face - 颜值排行榜</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/userstyle.css' %}">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+</head>
+<body background="{% static 'images/intro-bg.jpg' %}">
+<!--  导航栏部分 -->
+<nav class="navbar navbar-default" role="navigation" style="z-index: 2;">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a href="/app/index/" class="navbar-brand">Poker Face</a>
+        </div>
+        <div>
+            <ul class="nav navbar-nav navbar-left">
+                <li><a href="/app/Camera/">人脸识别</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        拓展功能 <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/app/rank/">颜值排行榜</a></li>
+                        <li><a href="#">Coming soon...</a></li>
+                    </ul>
+                </li>
+
+                <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">支持团队 <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><img width="100%" src="{% static 'images/geidian.png' %}"></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <ul class="nav navbar-nav navbar-right">
+            {% if request.user.is_authenticated %}
+                <li><a href="/app/modify/"><span class="glyphicon glyphicon-user"></span> {{ nickname }}</a></li>
+                <li><a href="/app/logout/"><span class="glyphicon glyphicon-log-out"></span> 退出</a></li>
+            {% else %}
+                <li><a href="/app/register/"><span class="glyphicon glyphicon-user"></span> 注册</a></li>
+                <li><a href="/app/login/"><span class="glyphicon glyphicon-log-in"></span> 登录</a></li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>
+
+<div class="row"></div>
+<br/>
+<div class="row"></div>
+<h1 align="center" style="color: #575757">Let us show you the top-8 ranking list !</h1>
+
+<div class="row"></div>
+<br/>
+<div class="row"></div>
+<div class="row"></div>
+<br/>
+<div class="row"></div>
+
+<!--图片部分-->
+
+<style>
+    .nolike{ font-size:40px;  color:#ccc; cursor:pointer;}
+    .like{font-size:40px;  color:#f00; cursor:pointer;}</style>
+
+<div class="row">
+    {% for pic_id, rank, nickname, pic_path, value, is_thumb, thumbs in result_firstRow %}
+        <form action="/app/thumbsUp/" method="post" id="topform{{pic_id}}" >
+        {% csrf_token %}
+            <div class="col-sm-6 col-md-3">
+                <div class="pic_div">
+                    <img src="/static/{{pic_path}}" style="width: 100%;height: 80%;">
+                    <input style="width: 0px" type="text" value="{{ pic_id }}" hidden name="pic_id">
+                    <div class="caption" align="middle">
+                        <h3>top {{ rank }}</h3>
+                        <p>score: {{ value }}</p>
+                        {% if is_thumb %}
+                        <p class="like" onclick="clickThumbs({{pic_id}})">{{ thumbs }}&#10084;</p>
+                        {% else %}
+                        <p class="nolike" onclick="clickThumbs({{pic_id}})">{{ thumbs }}&#10084;</p>
+                        {% endif %}
+                        <button hidden type="submit"></button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    {% endfor %}
+
+</div>
+
+<div class="row"></div>
+<br/>
+<div class="row"></div>
+
+<div class="row">
+    {% for pic_id, rank, nickname, pic_path, value, is_thumb, thumbs in result_secondRow %}
+        <form action="/app/thumbsUp/" method="post" >
+        {% csrf_token %}
+            <div class="col-sm-6 col-md-3">
+                <div class="pic_div">
+                    <img src="/static/{{pic_path}}" style="width: 100%;height: 80%;">
+                    <input style="width: 0px" type="text" value="{{ pic_id }}" hidden name="pic_id">
+                    <div class="caption" align="middle">
+                        <h3>top {{ rank }}</h3>
+                        {% if is_thumb %}
+                        <p class="like" onclick="clickThumbs({{pic_id}})">{{ thumbs }}&#10084;</p>
+                        {% else %}
+                        <p class="nolike" onclick="clickThumbs({{pic_id}})">{{ thumbs }}&#10084;</p>
+                        {% endif %}
+                        <button hidden type="submit"></button>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    {% endfor %}
+</div>
+
+<script>
+    function clickThumbs(id) {
+        var form = document.getElementById("topform" + id);
+        form.submit();
+    }
+</script>
+
+</body>
+</html>

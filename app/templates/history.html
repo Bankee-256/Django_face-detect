@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    <script type="text/javascript">
+        function showMsgs() {
+            var msg = document.getElementById("msg").value;
+            var showMsg = document.getElementById("showMsg");
+            showMsg.value = msg;
+        }
+    </script>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <meta charset="UTF-8">
+    <title>用户信息</title>
+    <meta http-equiv="Content-Type" content="text/html">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta id="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1, minimum-scale=1,  user-scalable=no,minimal-ui"
+          name="viewport">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/userstyle.css' %}">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="http://api.asilu.com/cdn/jquery.js,jquery.backstretch.min.js" type="text/javascript"></script>
+    <style type="text/css">
+        th {
+            font-size: 18px;
+        }
+
+        td {
+            font-size: 15px;
+        }
+
+        table {
+            width: 800px;
+        }
+
+        table tr th, td {
+
+            height: 30px;
+            line-height: 30px;
+            line-width: 50px;
+        }
+
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation" style="z-index: 2;">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a href="/app/index/" class="navbar-brand">Poker Face</a>
+        </div>
+        <div>
+            <ul class="nav navbar-nav navbar-left">
+                <li><a href="/app/Camera/">人脸识别</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        拓展功能 <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/app/rank/">颜值排行榜</a></li>
+                        <li><a href="#">Coming soon...</a></li>
+                    </ul>
+                </li>
+
+                <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">支持团队 <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><img width="100%" src="{% static 'images/geidian.png' %}"></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <ul class="nav navbar-nav navbar-right">
+            {% if request.user.is_authenticated %}
+                <li><a href="/app/modify/"><span class="glyphicon glyphicon-user"></span> {{ nickname }}</a></li>
+                <li><a href="/app/logout/"><span class="glyphicon glyphicon-log-out"></span> 退出</a></li>
+            {% else %}
+                <li><a href="/app/register/"><span class="glyphicon glyphicon-user"></span> 注册</a></li>
+                <li><a href="/app/login/"><span class="glyphicon glyphicon-log-in"></span> 登录</a></li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>
+
+{% load static %}
+<div id="Layer1" style="position:fixed; left:0%; top:0%; width:100%; height:100%; z-index: -1">
+    <img style="position:fixed;left:0px; top:0px; width:100%; height:100%" src="{% static 'images/intro-bg.jpg' %}"/>
+</div>
+
+<div style="position: absolute;top: 4%;width: 70%;left: 15%;height: 96%">
+    <canvas id="bgb00" style="position: absolute; left: 0%; top: 0%; width: 100%; height: 100%; z-index: -1"></canvas>
+    <script>
+        function draw() {
+            var ctx = document.getElementById('bgb00').getContext("2d");
+            ctx.fillStyle = 'rgba(255,255,255,0.7)';
+            ctx.fillRect(0, 0, 9999, 9999);
+        }
+
+        draw();
+    </script>
+    <div style="z-index: 2">
+        <article>
+            <div class="inbody1" style="background-color:lightslategrey">
+                <div style="position: absolute; top: 6%;"><p><b style="font-size: 25px">个人中心</b></p></div>
+            </div>
+        </article>
+        <article>
+            <div class="order-body" style="border-bottom-style: none">
+                <div class="order-list">
+                    <div class="order-doing" style="background-color: grey  ">
+                        <a class="but" style="font-size: medium" href="/app/modify/"><b>个人信息</b></a>
+                    </div>
+                    <div class="order-done" style="background-color: lightgrey">
+                        <a class="but" style="font-size: medium; color: white" href="#">查询历史记录</a>
+                    </div>
+                </div>
+
+                <table width="80%" id="mytable" style="position: absolute;left: 6%;top: 28%">
+                    <tr>
+                        <th>时间</th>
+                        <th>颜值分数</th>
+                        <th>图片</th>
+                        <th>权限</th>
+                        <th>操作</th>
+                    </tr>
+                    {% for phone, id, date, auth, pic, value, thumbs in history %}
+                        <form action="/app/deleteHistory/" method="post" id="recordform{{ id }}">
+                            {% csrf_token %}
+                            <tr>
+                                <input style="width: 0px" type="text" value="{{ id }}" hidden name="pic_id">
+                                <td><input type="text" value="{{ date }}" disabled="disabled" name="time"></td>
+                                <td><input type="text" value="{{ value }}" disabled="disabled"/></td>
+                                <td>
+                                    <!-- <input type="text" value="{{ pic }}" disabled="disabled" name="pic_path"/> -->
+                                    <a href="/static/{{ pic }}" disabled="disabled" name="pic_path">点击查看</a>
+                                </td>
+                                <td>
+                                    <select name="is_auth" onchange="updateRecord({{ id }})">
+                                        {% if auth %}
+                                            <option value="1" selected>公开</option>
+                                            <option value="0">不公开</option>
+                                        {% else %}
+                                            <option value="1">公开</option>
+                                            <option value="0" selected>不公开</option>
+                                        {% endif %}
+                                    </select>
+                                </td>
+
+                                <td>
+                                    <button type="submit" class="btn btn-danger">删除</button>
+                                </td>
+
+                            </tr>
+                        </form>
+                    {% endfor %}
+            </div>
+
+            </table>
+            <form style="position: absolute;top: 87%;left: 17%;width: 50%" action="" method="post">
+                {% csrf_token %}
+                <a style="margin-left: 45%;color: black">转到&nbsp;</a>
+                <input id="changePage" type="text" name="page" size="1" maxlength="100"/>
+                <a style="color: black">页&nbsp;</a>
+                <label style="color: grey">共{{ totalPage }}页</label>
+                <a href="/app/history/" class="jump" id="btn5" name="btn5">跳转</a>
+                <input type="hidden" name="tiaozhuan" value="JUMP"/>
+            </form>
+            <hr style="position: relative;top: 131%;left: 0%">
+
+            <div class="container" style="bottom:0;position: absolute;top: 91%;left: -5%">
+                <div class="row">
+                    <div class="" align="center" style="margin-top: 10px;">
+                        <ul class="list-inline">
+                            <li><a href="#">反馈</a></li>
+                            <li><a href="#">支持我们</a></li>
+                        </ul>
+                    </div>
+                    <div style="text-align:center;margin-top: 5px;margin-bottom: 20px;">
+                        Copyright &copy; 2020 WCL-FANS-CLUB
+                    </div>
+                </div>
+            </div>
+        </article>
+    </div>
+    <div/>
+
+    <script>
+        function updateRecord(id) {
+            var form = document.getElementById("recordform" + id);
+            form.setAttribute("action", "/app/updateHistory/");
+            form.submit();
+        }
+    </script>
+
+    <script type="text/javascript">//跳转
+    $(function () {
+        $(".jump").click(function () {
+            var href = $(this).attr("href");//获取到a标签中的href路径
+            $("form").attr("action", href).submit();
+            return false;
+        })
+    })
+    </script>
+
+
+    <article style="margin-top: 11%">
+        <div class="order-choose">
+            <ul class="order-ul">
+
+
+            </ul>
+        </div>
+    </article>
+    <script>
+        function deleteTr(object) {
+            // 获取table节点
+            var table = object.parentNode.parentNode.parentNode;
+            // 获取te节点
+            var tr = object.parentNode.parentNode;
+            // 删除（并返回）当前节点的指定子节点。
+            table.removeChild(tr);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,136 @@
+{% load static %}
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Poker Face</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style type="text/css">
+        .carousel {
+            height: 360px;
+            background-color: #000000;
+        }
+
+        .carousel .item {
+            height: 100%;
+            width: 100%;
+            background-color: #000000;
+        }
+
+        .carousel img {
+            height: 100%;
+            width: 100%;
+        }
+    </style>
+</head>
+<body background="{% static 'images/intro-bg.jpg' %}"
+      style=" background-repeat:no-repeat ;background-size:100% 100%; background-attachment: fixed;">
+
+<!--导航栏 -->
+<nav class="navbar navbar-default" role="navigation" style="z-index: 2;">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a href="/app/index/" class="navbar-brand">Poker Face</a>
+        </div>
+        <div>
+            <ul class="nav navbar-nav navbar-left">
+                <li><a href="/app/Camera/">人脸识别</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        拓展功能 <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/app/rank/">颜值排行榜</a></li>
+                        <li><a href="#">Coming soon...</a></li>
+                    </ul>
+                </li>
+
+               <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">支持团队 <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><img width="100%" src="{% static 'images/geidian.png' %}"></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <ul class="nav navbar-nav navbar-right">
+            {% if request.user.is_authenticated %}
+                <li><a href="/app/modify/"><span class="glyphicon glyphicon-user"></span> {{ nickname }}</a></li>
+                <li><a href="/app/logout/"><span class="glyphicon glyphicon-log-out"></span> 退出</a></li>
+            {% else %}
+                <li><a href="/app/register/"><span class="glyphicon glyphicon-user"></span> 注册</a></li>
+                <li><a href="/app/login/"><span class="glyphicon glyphicon-log-in"></span> 登录</a></li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>
+
+<!--轮播栏 -->
+<div class="container" style="margin-bottom:20px;position: absolute;top: 20%;left: 11%">
+    <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="4000">
+        <!-- 轮播（Carousel）指标 -->
+        <ol class="carousel-indicators">
+            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+            <li data-target="#myCarousel" data-slide-to="1"></li>
+            <li data-target="#myCarousel" data-slide-to="2"></li>
+        </ol>
+        <!-- 轮播（Carousel）项目 -->
+        <div class="carousel-inner">
+            <div class="item active">
+                <a href="/app/Camera/">
+                    <img src="{% static 'images/indexpic1.png' %}" alt="First slide">
+                </a>
+            </div>
+            <div class="item">
+                <a href="/app/rank/">
+                    <img src="{% static 'images/indexpic2.png' %}" alt="Second slide">
+                </a>
+            </div>
+            <div class="item">
+                <a href="/app/register/">
+                    <img src="{% static 'images/indexpic3.png' %}" alt="Third slide">
+                </a>
+            </div>
+        </div>
+        <!-- 轮播（Carousel）导航 -->
+        <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+    <a class="btn btn-default btn-lg" href="/app/Camera/" style="position: absolute;left: 45%;top: 108%" role="button">开始识别</a>
+</div>
+
+
+<canvas id="bgb00"  style="position: absolute; left: 0%; top: 90%; width: 100%; height: 10% " ></canvas>
+
+<!--页面底部-->
+<div class="container" style="bottom:0;position: absolute;top: 90%;left: 11%">
+    <div class="row">
+        <div class="" align="center" style="margin-top: 10px;">
+            <ul class="list-inline">
+                <li><a href="#">反馈</a></li>
+                <li><a href="#">支持我们</a></li>
+            </ul>
+        </div>
+        <div style="text-align:center;margin-top: 5px;margin-bottom: 20px;">
+            Copyright &copy; 2020 WCL-FANS-CLUB
+        </div>
+    </div>
+</div>
+
+<script>
+    function draw(){
+      var ctx = document.getElementById('bgb00').getContext("2d");
+      ctx.fillStyle = 'rgba(255,255,255,0.7)';
+      ctx.fillRect(0, 0, 9999, 9999);
+    }
+
+    draw();
+</script>
+</body>
+</html>
