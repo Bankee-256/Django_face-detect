@@ -1,0 +1,95 @@
+body,html{
+	padding: 0;
+	margin: 0;
+}
+body{
+	background: #F0F0F0;
+	/*background-position: center;*/
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	height: 100VH;
+	background-color: lightblue;
+}
+
+.login-box{
+/*	width: 400px;
+	height: 300px;*/
+	border: 1px solid #bbb;
+	/*添加阴影*/
+	box-shadow: 2px 2px 3px #999;
+}
+
+.left{
+	width: 400px;
+	height: 350px;
+	color: #9393FF;
+	border-right: 1px ;
+	padding: 1em;
+}
+
+.left h1{
+	font-size: 24px;
+	margin-left: 150px;
+	margin-bottom: 1em;
+
+}
+.login-table{
+	margin-left: 50px;
+	color:#CECEFF;
+}
+
+.login-table tr td:first-child{
+	text-align: right;
+	font-size: 14px;
+}
+.login-table input[type=tel], .login-table input[type=password], .login-table input[type=text]{
+	width: 200px;
+	height: 2em;
+	border: 1px solid #DDD;
+	font-size: 14px;
+/*	outline: ipx solid #09f;*/
+	padding: 0.5em;
+}
+.login-table input[type=tel]:focus,
+.login-table input[type=password]:focus,
+.login-table input[type=text]:focus{
+	outline: ipx solid #09f;
+}
+
+.login-table tr td{
+	height: 2em;
+}
+
+.submit-create{
+	margin-top: 10px;
+	margin-left: 40px;
+	width: 6em;
+	height: 2.4em;
+	border: 1px solid #A4D3EE;
+	background: #a9a9a9;
+	color: white;
+	outline: none;
+	font-size: 16px;
+	padding: 0.2em 0.2em;
+	box-shadow: 1px 1px 2px #333;
+}
+
+.front-register a{
+	text-decoration: none;
+	margin-left: 30px;
+}
+
+/*设备尺寸查询*/
+@media (min-width: 800px) and (max-width: 1200px) {
+  body {
+    background-color: #F0F0F0;
+  }
+}
+/*设备尺寸查询*/
+@media (min-width: 200px) and (max-width: 800px) {
+  body {
+    background-color: lightpink;
+  }
+}

@@ -1,0 +1,167 @@
+body,html{
+	padding: 0;
+	margin: 0;
+}
+body{
+	background: lightblue;
+	/*background-position: center;*/
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	height: 100VH;
+}
+
+.login-box{
+	width: 850px;
+	height: 500px;
+	border: 1px solid #bbb;
+	/*添加阴影*/
+	box-shadow: 2px 2px 5px #999;
+}
+
+.left, .right{
+	/*background: #BCEE68;*/
+	height: 100%;
+	margin-bottom: 5px;
+	float: left;
+	box-sizing: border-box;
+}
+.left{
+	width: 600px;
+
+	padding: 2em;
+}
+.right{
+	display: flex;
+	flex-direction: row;
+	justify-content: left;
+	align-items: flex-end;
+	width: 250px;
+	padding: 2em;
+	/*background: wheat;*/
+
+	/*align-items: flex-end;*/
+
+}
+
+.left h1{
+	font-size: 24px;
+	margin: 0;
+	margin-bottom: 1em;
+
+	color:cornflowerblue;
+}
+.login-table{
+	color: #333;
+}
+
+.login-table tr td:first-child{
+	text-align: right;
+	font-size: 12px;
+}
+.login-table input[type=tel], .login-table input[type=password], .login-table input[type=password]{
+	width: 200px;
+	height: 2em;
+	border: 1px solid #DDD;
+	font-size: 12px;
+/*	outline: ipx solid #09f;*/
+	padding: 0.5em;
+}
+
+.login-table input[type=tel]:focus,
+.login-table input[type=password]:focus{
+	/*outline:ipx solid  #09f;*/
+}
+
+.login-table tr td{
+	height: 3em;
+}
+
+.submit-create{
+	width: 6em;
+	height: 2.4em;
+	border: 1px solid #A4D3EE;
+	background: rgb(155,2,2);
+	color: white;
+	font-size: 16px;
+	padding: 0.2em 0.2em;
+	box-shadow: 1px 1px 2px #333;
+	outline: none;
+	text-decoration: none;
+	margin-top: 20px;
+	margin-left: 55px;
+
+	border-top-left-radius: 10%;
+	border-top-right-radius:10%;
+	border-bottom-left-radius: 10%;
+	border-bottom-right-radius: 10%;
+}
+.login-table .submit{
+	font-size: 8px;
+	/*padding: 1em;*/
+
+}
+
+.right .submit-inter{
+	/*margin-left: 80px;*/
+	width: 5em;
+	height: 40px;
+	font-size:18px;
+	/*height: 2em;*/
+	box-sizing: border-box;
+
+	background: #A4D3EE;
+	border-top-left-radius: 10%;
+	border-top-right-radius:10%;
+	border-bottom-left-radius: 10%;
+	border-bottom-right-radius: 10%;
+}
+
+.right .submit-inter a{
+	text-decoration: none ;
+}
+.right .js p{
+	width: 200px;
+	padding: 1em;
+	/*background-color: white;*/
+}
+
+
+/*设备尺寸查询*/
+@media screen and (max-width: 600px) {
+  /*body {
+    background-color: lightpink;
+  }
+*/
+
+
+.login-box{
+	width: 400px;
+	height: 600px;
+	border: 1px solid #bbb;
+	/*添加阴影*/
+	box-shadow: 2px 2px 3px #999;
+}
+
+.left, .right{
+	/*background: #BCEE68;*/
+	width: 100%;
+	margin-bottom: 5px;
+	float: left;
+	box-sizing: border-box;
+}
+.left{
+	height: 400px;
+	background: #fff;
+	/*border-right: 1px solid #B22222;*/
+	padding: 1em;
+}
+.right{
+	height: 300px;
+	background-color: red;
+	alignment-baseline: bottom;
+	/*float: right;*/
+	/*background: #999;*/
+}
+}
