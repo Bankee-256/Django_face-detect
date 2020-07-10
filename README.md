@@ -1,2 +1,2 @@
-# 9 web kings aimed for 100 points
-小学期划水代码
+# 基于Django的人脸识别项目
+小学期划水代码人脸识别调用的是百度的API，如果用不了了请自行申请
